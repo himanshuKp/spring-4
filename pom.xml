@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.himanshu</groupId>
-    <artifactId>spring-practice</artifactId>
+    <artifactId>spring-4-practice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-practice</name>
     <description>spring-practice</description>

@@ -1,3 +1,9 @@
 spring:
   application:
     name: spring-practice
+  mvc:
+    problemdetails:
+      enabled: true
+  web:
+    resources:
+      add-mappings: false
