@@ -17,3 +17,18 @@ spring:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:3306/my_database
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.hibernate.format_sql: true
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss}{faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(%msg){green}%n"
