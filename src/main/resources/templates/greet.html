@@ -7,6 +7,14 @@
 </head>
 <body>
 <h1>Hello, <span th:text="${username}"></span>!</h1>
+
+<th:block th:if="${not #lists.isEmpty(students)}">
+    <h2>Students:</h2>
+    <ul>
+        <li th:each="student : ${students}" th:text="${student.name}"></li>
+    </ul>
+</th:block>
+
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>
 </form>

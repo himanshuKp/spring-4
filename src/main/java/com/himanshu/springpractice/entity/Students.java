@@ -1,15 +1,20 @@
 package com.himanshu.springpractice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
+@ToString
+@Table(name = "students")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "student_id")
 public class Students {
     @Id
-    @Column(name = "studentid", nullable = false)
+    @Column(name = "student_id", nullable = false)
     private Integer id;
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -19,6 +24,10 @@ public class Students {
     private String major;
     @Column(name = "gpa", precision = 3, scale = 2)
     private BigDecimal gpa;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Enrollment> enrollment;
 
     public void setId(Integer id) {
         this.id = id;
