@@ -1,11 +1,13 @@
 package com.himanshu.springpractice.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+@Getter
 @Entity
 @Table(name = "enrollments")
 @ToString
@@ -27,32 +29,16 @@ public class Enrollment {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate enrollmentDate;
 
-    public Integer getId() {
-        return id;
-    }
-
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Students getStudent() {
-        return student;
     }
 
     public void setStudent(Students student) {
         this.student = student;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
     public void setCourse(Course course) {
         this.course = course;
-    }
-
-    public LocalDate getEnrollmentDate() {
-        return enrollmentDate;
     }
 
     public void setEnrollmentDate(LocalDate enrollmentDate) {

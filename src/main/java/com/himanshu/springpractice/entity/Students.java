@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @ToString
@@ -27,7 +28,7 @@ public class Students {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<Enrollment> enrollment;
+    private Set<Enrollment> enrollment;
 
     public void setId(Integer id) {
         this.id = id;

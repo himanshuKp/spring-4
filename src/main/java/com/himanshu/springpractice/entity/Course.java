@@ -3,7 +3,8 @@ package com.himanshu.springpractice.entity;
 import jakarta.persistence.*;
 import lombok.ToString;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @ToString
@@ -25,15 +26,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<Enrollment> enrollment;
-
-    public List<Enrollment> getEnrollment() {
-        return enrollment;
-    }
-
-    public void setEnrollment(List<Enrollment> enrollment) {
-        this.enrollment = enrollment;
-    }
+    private Set<Enrollment> enrollment;
 
     public Integer getId() {
         return id;
@@ -67,4 +60,11 @@ public class Course {
         this.credits = credits;
     }
 
+    public Set<Enrollment> getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(Set<Enrollment> enrollment) {
+        this.enrollment = enrollment;
+    }
 }

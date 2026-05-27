@@ -67,7 +67,7 @@ public class GreetingsController {
         try {
             customUserDetailService.registerUser(username, password);
         } catch (Exception usernameAlreadyExists) {
-            return "/register?error";
+            return "redirect:/register?error";
         }
 
         Authentication authentication = authenticationManager.authenticate(

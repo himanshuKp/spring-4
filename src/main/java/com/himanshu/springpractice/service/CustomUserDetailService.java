@@ -1,9 +1,13 @@
 package com.himanshu.springpractice.service;
 
 import com.himanshu.springpractice.entity.User;
+import com.himanshu.springpractice.entity.UserLog;
+import com.himanshu.springpractice.repository.UserLogRepository;
 import com.himanshu.springpractice.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,19 +15,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final UserLogRepository userLogRepository;
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailService.class);
 
-    public CustomUserDetailService(UserRepository userRepository) {
+    public CustomUserDetailService(UserRepository userRepository,
+                                   UserLogRepository userLogRepository) {
         this.userRepository = userRepository;
+        this.userLogRepository = userLogRepository;
     }
 
     @Override
@@ -45,16 +52,32 @@ public class CustomUserDetailService implements UserDetailsService {
                 .build();
     }
 
+    @Transactional
     public void registerUser(String username, String password) throws Exception {
-        boolean findUsername = userRepository
-                .findAll()
-                .stream()
-                .anyMatch(u -> u.getUsername().equalsIgnoreCase(username));
-        if (findUsername) {
+        if (username == null){
+            throw new IllegalArgumentException("Username is required");
+        }
+        boolean exists = userRepository.existsByUsernameIgnoreCase(username);
+        System.out.println("exists = " + exists);
+        if (exists) {
             throw new Exception("Username already exists");
         }
+
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(username, encodedPassword);
-        userRepository.save(user);
+        User userSaved = null;
+
+        try {
+            userSaved = userRepository.save(user);
+        } catch (DataIntegrityViolationException e){
+            throw new Exception("Username already exists");
+        }
+
+        UserLog userLog = new UserLog();
+        userLog.setUserId(userSaved.getId());
+        userLog.setAction("User registered");
+        userLog.setTimeStamp(LocalDateTime.now());
+
+        userLogRepository.save(userLog);
     }
 }
